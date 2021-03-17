@@ -1,11 +1,13 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {API} from "../../Api/Api";
-
+import {v1} from 'uuid';
 export interface ShopItemType{
     image: string,
     title: string,
+    subTitle: string
     descrip: string
     price: number
+    id: string
 }
 
 export const getShopList = createAsyncThunk('shop/getShopList', async (param, {dispatch, rejectWithValue}) => {
@@ -28,7 +30,7 @@ const slice = createSlice({
     },
     extraReducers:builder => {
         builder.addCase(getShopList.fulfilled, (state, action) => {
-            return action.payload.chopList
+            return action.payload.chopList.map((el:any) => ({...el, id: v1()}))
         })
     }
 })

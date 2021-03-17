@@ -10,6 +10,8 @@ import {NavLink} from 'react-router-dom';
 import style from './Header.module.scss'
 import HomeIcon from '@material-ui/icons/Home';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../../store/store";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -28,6 +30,8 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Header = () => {
     const classes = useStyles();
+    const shopList = useSelector((state: AppRootStateType) => state.cart)
+
     return (
         <>
             <AppBar position="static">
@@ -43,6 +47,7 @@ const Header = () => {
                     </Typography>
                     <Button color="inherit"> <NavLink to={RoutingType.cart} className={style.headerLink}>
                         <ShoppingCartIcon/>
+                        {shopList.length > 0 ? shopList.reduce((el, cur) => el + cur.count, 0) : null}
                     </NavLink></Button>
                 </Toolbar>
             </AppBar>

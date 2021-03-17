@@ -1,10 +1,10 @@
 import React, {useEffect} from 'react';
 import './App.css';
 import {getShopList} from "../pages/main/shopReducer";
-import {AppRootStateType, useAppDispatch} from "../store/store";
-import {useSelector} from "react-redux";
+import {useAppDispatch} from "../store/store";
 import Header from "../components/header";
 import Routes from "../routes";
+import {Container} from "@material-ui/core";
 
 
 function App() {
@@ -12,16 +12,18 @@ function App() {
     useEffect(() => {
         dispatch(getShopList())
     }, [dispatch])
-    const shopList = useSelector((state:AppRootStateType) => state.shop)
-    console.log(shopList)
-  return (
-    <div className="App">
-      <header>
-          <Header/>
-      </header>
-        <Routes/>
-    </div>
-  );
+
+
+    return (
+        <div className="App">
+            <header>
+                <Header/>
+            </header>
+            <Container maxWidth="xl">
+                <Routes/>
+            </Container>
+        </div>
+    );
 }
 
 export default App;
