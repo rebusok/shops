@@ -1,7 +1,6 @@
 import {makeStyles} from '@material-ui/core/styles';
 import React, {FC} from 'react';
 import {ButtonBase, createStyles, Grid, IconButton, Paper, Theme, Typography} from "@material-ui/core";
-import {ShopItemType} from "../../main/shopReducer";
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import {CartItemType} from "../cartReducer";

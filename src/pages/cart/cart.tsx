@@ -6,6 +6,7 @@ import { createStyles } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core';
 import Item from "../../components/item";
 import CartItem from './cartItem';
+import FormCart from './formCart/formCart';
 
 
 
@@ -49,8 +50,10 @@ const Cart = () => {
             <Grid container spacing={1}>
                 <Grid container item xs={12} spacing={3}>
                     <FormRow />
-                    <Grid item xs={4}>
-                        <Paper className={classes.paper}>item</Paper>
+                    <Grid item xs={12} xl={3} sm={6}>
+                        <Paper className={classes.paper}>
+                            <FormCart/>
+                        </Paper>
                     </Grid>
                 </Grid>
                 <div>Total price: {shopList2.length > 0 ? shopList2.reduce((el, cur) => el + cur.price, 0) : null} ₽</div>
