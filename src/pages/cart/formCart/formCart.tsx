@@ -1,7 +1,10 @@
-import React, {FC, useState} from 'react';
+import React, {FC} from 'react';
 import {Button, FormControl, FormGroup, makeStyles, TextField} from "@material-ui/core";
 import InputMask from "react-input-mask";
 import {FormikHelpers, useFormik} from "formik";
+import {API} from "../../../Api/Api";
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "../../../store/store";
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -24,56 +27,63 @@ type FormValueType ={
     name: string
     surname: string
     address: string
+    phone: string
+    other:string
 }
 
 
 const FormCart:FC = () => {
     const classes = useStyles();
-    const [valuesss, setValues] = useState<string>('')
+    const shopList2 = useSelector((state: AppRootStateType) => state.cart)
+
     type FormikErrorType = {
-        email?: string
-        password?: string
-        rememberMe?: boolean
+        name?: string
+        surname?: string
+        address?: string
+        phone?: string
+        other?:string
     }
-    const customChange = (e:any) => {
-        setValues(e.target.value)
-    }
+
     const formik = useFormik({
         initialValues: {
             name: '',
             surname: '',
-            address: ''
-
+            address: '',
+            phone: '',
+            other: ''
         },
-        // validate: (values) => {
-        //     const errors: FormikErrorType = {};
-        //     if (!values.email) {
-        //         errors.email = 'Required';
-        //     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-        //         errors.email = 'Invalid email address';
-        //     }
-        //     if (!values.password) {
-        //         errors.password = 'Required';
-        //     } else if (values.password.length < 6) {
-        //         errors.password = 'Password has been 6 length'
-        //     }
-        //     return errors;
-        // },
+        validate: (values) => {
+            const errors: FormikErrorType = {};
+            if (!values.name) {
+                errors.name = 'Required';
+            }
+            if (!values.surname) {
+                errors.surname = 'Required';
+            }
+            if (!values.address) {
+                errors.address = 'Required';
+            }
+            if (!values.phone) {
+                errors.phone = 'Required';
+            }
+            if(values.phone.replace(/_/gm, '').length <= 16) {
+                errors.phone = 'Invalid phone'
+            }
+            return errors;
+        },
         onSubmit: async (values, formikHelpers: FormikHelpers<FormValueType>) => {
 
             console.log(values)
-            console.log(valuesss)
+            console.log(values.phone.length)
+            try {
+                const res = await API.sendMail({carts:shopList2 , ...values})
+                console.dir(res)
+                formik.resetForm()
+            }catch (e) {
+                console.log(e.message)
+                formikHelpers.setFieldError('other', e.message)
+            }
 
-
-            // const res = await dispatch(LoginTC(values))
-            // if (LoginTC.rejected.match(res)) {
-            //     if (res.payload?.fieldsErrors?.length){
-            //         const error = res.payload.fieldsErrors[0]
-            //         formikHelpers.setFieldError(error.field, error.error)
-            //     } else {
-            //
-            //     }
-            // }
 
         },
     })
@@ -82,19 +92,31 @@ const FormCart:FC = () => {
             <form className={classes.form} onSubmit={formik.handleSubmit} >
                 <FormControl className={classes.formControl}>
                     <FormGroup className={classes.formGroup}>
-                        <TextField  label="Name" {...formik.getFieldProps('name')}/>
-                        <TextField label="Surname" {...formik.getFieldProps('surname')}/>
-                        <TextField label="Address" multiline rowsMax={2} {...formik.getFieldProps('address')}/>
+                        <TextField  label="Name" {...formik.getFieldProps('name')} onBlur={formik.handleBlur}/>
+                        {formik.touched &&
+                        formik.errors.name ? <div style={{color: 'red'}}>{formik.errors.name}</div> : null}
+                        <TextField label="Surname" {...formik.getFieldProps('surname')} onBlur={formik.handleBlur}/>
+                        {formik.touched &&
+                        formik.errors.surname ? <div style={{color: 'red'}}>{formik.errors.surname}</div> : null}
+                        <TextField  label="Address" multiline rowsMax={2} {...formik.getFieldProps('address')} onBlur={formik.handleBlur}/>
+                        {formik.touched &&
+                        formik.errors.address ? <div style={{color: 'red'}}>{formik.errors.address}</div> : null}
                         <InputMask
-                            mask="+7 (999) 999-99-99"
+                            mask="+7(999) 999-99-99"
                             disabled={false}
-                            value={valuesss}
-                            onChange={customChange}
+                            {...formik.getFieldProps('phone')}
                         >
-                            {() => <TextField label="Phone"/>}
+                            {(a:any) => {
+                                return <TextField label="Phone" {...a} />
+                            }}
                         </InputMask>
+                        {formik.touched &&
+                        formik.errors.phone ? <div style={{color: 'red'}}>{formik.errors.phone}</div> : null}
+
                     </FormGroup>
-                    <Button type={'submit'} variant={'contained'} color={'primary'}>Login</Button>
+                    <Button type={'submit'} variant={'contained'} color={'primary'}>Order</Button>
+                    {
+                        formik.errors.other ? <div style={{color: 'red'}}>{formik.errors.other}</div> : null}
                 </FormControl>
             </form>
         </>

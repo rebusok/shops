@@ -3,7 +3,8 @@ import React, {FC} from 'react';
 import {ButtonBase, createStyles, Grid, IconButton, Paper, Theme, Typography} from "@material-ui/core";
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
-import {CartItemType} from "../cartReducer";
+import {addCartItem, CartItemType, deleteCartItem} from "../cartReducer";
+import {useAppDispatch} from "../../../store/store";
 
 interface cartItemTypeProps {
     cart:   CartItemType
@@ -49,8 +50,18 @@ const useStyles = makeStyles((theme: Theme) =>
 
 
 const CartItem:FC<cartItemTypeProps> = ({cart}) => {
-    const {descrip, image, price, subTitle, title,count} = cart
+
+
+    const {descrip, image,  title,count, id} = cart
     const classes = useStyles();
+    const dispatch = useAppDispatch()
+    const onIncHandler = () => {
+        dispatch(addCartItem({cart:cart}))
+    }
+    const onDecHandler = (id:string) => {
+        dispatch(deleteCartItem({id:id}))
+    }
+
     return (
         <div className={classes.root}>
             <Paper className={classes.paper}>
@@ -74,11 +85,11 @@ const CartItem:FC<cartItemTypeProps> = ({cart}) => {
 
                         </Grid>
                         <Grid item xs={2} className={classes.btnIncDec}>
-                            <IconButton>
+                            <IconButton onClick={() => onDecHandler(id)}>
                                 <RemoveIcon/>
                             </IconButton>
                             <Typography variant="subtitle1" className={classes.counter}>{count}</Typography>
-                            <IconButton>
+                            <IconButton onClick={onIncHandler}>
                                 <AddIcon/>
 
                             </IconButton>

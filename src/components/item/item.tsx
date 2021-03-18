@@ -2,10 +2,10 @@ import React, {FC} from 'react';
 import {
     Button,
     CardHeader,
-    createMuiTheme, createStyles,
+    createMuiTheme,
+    createStyles,
     IconButton,
     makeStyles,
-    Theme,
     ThemeProvider,
     Typography
 } from "@material-ui/core";
@@ -16,9 +16,8 @@ import CardActions from "@material-ui/core/CardActions";
 import Card from "@material-ui/core/Card";
 import {green} from "@material-ui/core/colors";
 import {ShopItemType} from "../../pages/main/shopReducer";
-import { addCartItem } from '../../pages/cart/cartReducer';
-import {AppRootStateType, useAppDispatch} from "../../store/store";
-import {useSelector} from "react-redux";
+import {addCartItem} from '../../pages/cart/cartReducer';
+import {useAppDispatch} from "../../store/store";
 
 
 interface cartTypeProps {
@@ -29,7 +28,7 @@ const theme = createMuiTheme({
         primary: green,
     },
 });
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
         card: {
             minWidth: 300,

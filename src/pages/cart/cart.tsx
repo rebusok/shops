@@ -4,7 +4,6 @@ import {AppRootStateType} from "../../store/store";
 import {Grid, makeStyles, Paper} from "@material-ui/core";
 import { createStyles } from '@material-ui/core/styles';
 import { Theme } from '@material-ui/core';
-import Item from "../../components/item";
 import CartItem from './cartItem';
 import FormCart from './formCart/formCart';
 
@@ -27,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const Cart = () => {
     const shopList2 = useSelector((state: AppRootStateType) => state.cart)
 
-    const shopList = useSelector((state: AppRootStateType) => state.shop)
+
     const classes = useStyles();
     function FormRow() {
         return (
@@ -56,7 +55,7 @@ const Cart = () => {
                         </Paper>
                     </Grid>
                 </Grid>
-                <div>Total price: {shopList2.length > 0 ? shopList2.reduce((el, cur) => el + cur.price, 0) : null} ₽</div>
+                <div>Total price: {shopList2.length > 0 ? shopList2.reduce((el, cur) => el + (cur.price * cur.count), 0) : null} ₽</div>
             </Grid>
         </div>
     );

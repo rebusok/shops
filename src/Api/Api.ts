@@ -11,5 +11,8 @@ const axiosInstance = axios.create(configOMB);
 export const API = {
     getShopList: () => {
         return axiosInstance.get('shopList.json')
+    },
+    sendMail: (data:any) => {
+        return axiosInstance.post('http://localhost:3010/sendMessage', data)
     }
 }
