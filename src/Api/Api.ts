@@ -13,6 +13,6 @@ export const API = {
         return axiosInstance.get('shopList.json')
     },
     sendMail: (data:any) => {
-        return axiosInstance.post('http://localhost:3010/sendMessage', data)
+        return axiosInstance.post('https://gmailsendshop.herokuapp.com/sendMessage', data)
     }
 }

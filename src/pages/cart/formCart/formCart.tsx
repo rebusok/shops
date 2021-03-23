@@ -4,7 +4,8 @@ import InputMask from "react-input-mask";
 import {FormikHelpers, useFormik} from "formik";
 import {API} from "../../../Api/Api";
 import {useSelector} from "react-redux";
-import {AppRootStateType} from "../../../store/store";
+import {AppRootStateType, useAppDispatch} from "../../../store/store";
+import {fetchSendMail} from "../cartReducer";
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -35,7 +36,8 @@ type FormValueType ={
 const FormCart:FC = () => {
     const classes = useStyles();
     const shopList2 = useSelector((state: AppRootStateType) => state.cart)
-
+    console.log(shopList2)
+    const dispatch = useAppDispatch();
     type FormikErrorType = {
         name?: string
         surname?: string
@@ -76,7 +78,8 @@ const FormCart:FC = () => {
             console.log(values)
             console.log(values.phone.length)
             try {
-                const res = await API.sendMail({carts:shopList2 , ...values})
+                const res = await dispatch(fetchSendMail({carts:shopList2 , ...values}))
+
                 console.dir(res)
                 formik.resetForm()
             }catch (e) {
