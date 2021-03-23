@@ -2,7 +2,6 @@ import React, {FC} from 'react';
 import {Button, FormControl, FormGroup, makeStyles, TextField} from "@material-ui/core";
 import InputMask from "react-input-mask";
 import {FormikHelpers, useFormik} from "formik";
-import {API} from "../../../Api/Api";
 import {useSelector} from "react-redux";
 import {AppRootStateType, useAppDispatch} from "../../../store/store";
 import {fetchSendMail} from "../cartReducer";
@@ -35,7 +34,8 @@ type FormValueType ={
 
 const FormCart:FC = () => {
     const classes = useStyles();
-    const shopList2 = useSelector((state: AppRootStateType) => state.cart)
+    const shopList2 = useSelector((state: AppRootStateType) => state.cart.carts)
+    const status = useSelector((state: AppRootStateType) => state.cart.status)
     console.log(shopList2)
     const dispatch = useAppDispatch();
     type FormikErrorType = {
@@ -117,9 +117,11 @@ const FormCart:FC = () => {
                         formik.errors.phone ? <div style={{color: 'red'}}>{formik.errors.phone}</div> : null}
 
                     </FormGroup>
-                    <Button type={'submit'} variant={'contained'} color={'primary'}>Order</Button>
+                    <Button type={'submit'} variant={'contained'} color={'primary'} disabled={status === 'loading'}>Order</Button>
                     {
                         formik.errors.other ? <div style={{color: 'red'}}>{formik.errors.other}</div> : null}
+                    {
+                        status === 'loading' ? <div style={{color: 'red'}}>{status}</div> : null}
                 </FormControl>
             </form>
         </>

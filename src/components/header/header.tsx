@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Header = () => {
     const classes = useStyles();
-    const shopList = useSelector((state: AppRootStateType) => state.cart)
+    const shopList = useSelector((state: AppRootStateType) => state.cart.carts)
 
     return (
         <>

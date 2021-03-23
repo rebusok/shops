@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 const Cart = () => {
-    const shopList2 = useSelector((state: AppRootStateType) => state.cart)
+    const shopList2 = useSelector((state: AppRootStateType) => state.cart.carts)
 
 
     const classes = useStyles();
@@ -32,13 +32,13 @@ const Cart = () => {
         return (
             <React.Fragment>
                 <Grid item xs={8}>
-                    {shopList2.map((cart, inx) => {
+                    {shopList2.length > 0  ? shopList2.map((cart, inx) => {
                         return (
                             <Grid item sm  key={cart.id + inx}>
-                                    <CartItem cart={cart}/>
+                                <CartItem cart={cart}/>
                             </Grid>
                         )
-                    })}
+                    }) : <h5>Cart empty</h5>}
                 </Grid>
             </React.Fragment>
         );
@@ -55,7 +55,7 @@ const Cart = () => {
                         </Paper>
                     </Grid>
                 </Grid>
-                <div>Total price: {shopList2.length > 0 ? shopList2.reduce((el, cur) => el + (cur.price * cur.count), 0) : null} ₽</div>
+                <div>Total price: {shopList2 && shopList2.length > 0 ? shopList2.reduce((el, cur) => el + (cur.price * cur.count), 0) : null} ₽</div>
             </Grid>
         </div>
     );
