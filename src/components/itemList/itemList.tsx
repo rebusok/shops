@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const ItemList = () => {
     const classes = useStyles();
     const shopList = useSelector((state: AppRootStateType) => state.shop)
+    console.log(shopList.length)
     return (
         <div>
             <Grid container spacing={5}>

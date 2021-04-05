@@ -4,12 +4,10 @@ import {
     CardHeader,
     createMuiTheme,
     createStyles,
-    IconButton,
     makeStyles,
     ThemeProvider,
     Typography
 } from "@material-ui/core";
-import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
@@ -31,59 +29,77 @@ const theme = createMuiTheme({
 const useStyles = makeStyles(() =>
     createStyles({
         card: {
-            minWidth: 300,
-            minHeight: 520,
+            minWidth: 320,
+            minHeight: 720,
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between'
         },
         media: {
-            height: 0,
-            paddingTop: '56.25%', // 16:9
+            height: 200,
             width: '100%',
-            backgroundSize: 'auto 100%'
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems:'center',
+            position: 'relative'
+
         },
         cardAction: {
             display: 'flex',
             justifyContent: 'space-between',
             backgroundSize: 'contain'
+        },
+        title: {
+            fontSize: '15px'
+        },
+        image: {
+            width: "70%"
         }
+
     }),
 );
 const Item:FC<cartTypeProps> = ({cart}) => {
     const classes = useStyles();
-    const {descrip, image, price, subTitle, title} = cart
+    const {descrip, image, prise, subTitle, title} = cart
     const dispatch = useAppDispatch();
 
     const onClickHandler = () => {
         dispatch(addCartItem({cart}))
         console.log('clock')
     }
+    console.log(cart)
     return (
         <>
             <Card className={classes.card}>
                 <CardHeader
-                    action={
-                        <IconButton aria-label="settings" onClick={onClickHandler}>
-                            <AddShoppingCartIcon/>
-                        </IconButton>
-                    }
+
+                    className={classes.title}
                     title={title}
                     subheader={subTitle}
                 />
-                <CardMedia
-                    className={classes.media}
-                    image={image}
-                    title={subTitle}
-                />
+                <div className={classes.media}>
+                    {image ? (
+                        <CardMedia
+                            component="img"
+                            className={classes.image}
+                            alt="Contemplative Reptile"
+
+                            image={image}
+                            title={subTitle}
+                        />
+                    ) : (
+                        <span>Load</span>
+                    )}
+                </div>
+
                 <CardContent>
                     <Typography variant="body2" color="textSecondary" component="h4">
-                        {descrip}
+                        {descrip ?  descrip : ''}
                     </Typography>
                 </CardContent>
                 <CardActions disableSpacing className={classes.cardAction}>
                     <Typography variant="h5" component="p">
-                        Price: {price}₽
+                        Price: {prise}₽
                     </Typography>
                     <ThemeProvider theme={theme}>
                         <Button size="small" color="primary" variant="contained" onClick={onClickHandler}>

@@ -6,7 +6,7 @@ export interface ShopItemType{
     title: string,
     subTitle: string
     descrip: string
-    price: number
+    prise: number
     id: string
 }
 

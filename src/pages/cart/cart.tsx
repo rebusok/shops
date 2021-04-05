@@ -55,7 +55,7 @@ const Cart = () => {
                         </Paper>
                     </Grid>
                 </Grid>
-                <div>Total price: {shopList2 && shopList2.length > 0 ? shopList2.reduce((el, cur) => el + (cur.price * cur.count), 0) : null} ₽</div>
+                <div>Total price: {shopList2 && shopList2.length > 0 ? shopList2.reduce((el, cur) => el + (cur.prise * cur.count), 0) : null} ₽</div>
             </Grid>
         </div>
     );
